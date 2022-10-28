@@ -29,12 +29,10 @@ server.app.use('/personal', require('./routes/personal'));
 
 mongoose.set('useFindAndModify', false);
 mongoose
-              
     .connect('mongodb+srv://developer:developer@cluster0.sqf1s.mongodb.net/gestion_app?retryWrites=true&w=majority', {
         useCreateIndex:true,
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        
     });
     console.log('BD CONECTADAA');
 

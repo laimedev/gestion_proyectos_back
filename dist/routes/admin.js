@@ -68,7 +68,7 @@ adminRouter.post('/login/google', [
         else {
             //existe usuario
             admin = adminDB;
-            admin.google = true;
+            // admin.google = true;
             admin.password = '@@@';
         }
         // Guardar en BD
@@ -296,6 +296,54 @@ adminRouter.post('/update_pass/:id', (req, res) => {
             admin
         });
         admin;
+    });
+});
+//Obetner 1 proyecto por ID
+adminRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    admin_model_1.Admin.find({ _id: body._id }, (err, AdminDB) => {
+        if (err)
+            throw err;
+        if (AdminDB) {
+            const admin = AdminDB; //TRAE TODOS
+            res.json({
+                ok: true,
+                admin,
+                mensaje: 'Admin encontrado!!'
+            });
+        }
+        else {
+            res.json({
+                ok: false,
+                mensaje: 'Admin no encontrado en nuestro sistema!'
+            });
+        }
+    });
+}));
+//Actualizar personal
+adminRouter.post('/update/:id', (req, res) => {
+    const id = req.params.id;
+    const admin = {
+        nombre: req.body.nombre,
+        email: req.body.email,
+        password_show: req.body.password_show,
+        role: req.body.role,
+    };
+    // admin.password_show =  req.body.password_show,
+    // admin.password = bcrypt.hashSync(req.body.password_show, 10),
+    admin_model_1.Admin.findByIdAndUpdate(id, admin, { new: true }, (err, admin) => {
+        if (err)
+            throw err;
+        if (!admin) {
+            return res.json({
+                ok: false,
+                mensaje: 'Invalid data'
+            });
+        }
+        res.json({
+            ok: true,
+            admin
+        });
     });
 });
 module.exports = adminRouter;

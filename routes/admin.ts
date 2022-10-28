@@ -12,6 +12,7 @@ import { Admin } from "../models/admin.model";
 import  bcrypt  from 'bcrypt';
 import { Usuario } from '../models/usuario.model';
 import { getMenuFrontEnd } from '../helpers/menu-frontend';
+import { User } from '../models/user.model';
 
 const { generarJWT } = require ('../helpers/jwt'); 
 const { validarJWT } = require('../middlewares/validar-jwt');
@@ -74,7 +75,7 @@ adminRouter.post('/login/google',
         } else {
             //existe usuario
             admin = adminDB;
-            admin.google = true;
+            // admin.google = true;
             admin.password = '@@@'
         }
 
@@ -394,6 +395,60 @@ adminRouter.post('/update_pass/:id', (req: any, res: Response) => {
     })
 });
 
+
+
+//Obetner 1 proyecto por ID
+adminRouter.post('/showByID', async (req: any, res: any) => {
+    const body = req.body;
+    Admin.find({_id:body._id} , (err, AdminDB) => {
+        if( err ) throw err;
+        if( AdminDB ) {
+            const admin = AdminDB;  //TRAE TODOS
+            res.json({
+                ok: true,
+                admin,
+                mensaje: 'Admin encontrado!!'
+            });
+        } else {
+            res.json({
+                ok: false,
+                mensaje: 'Admin no encontrado en nuestro sistema!'
+            });
+        }
+    }) 
+});
+
+
+//Actualizar personal
+adminRouter.post('/update/:id', (req: any, res: Response) => {
+    const id=req.params.id;
+
+    
+
+    const admin = {
+        nombre: req.body.nombre,
+        email: req.body.email,
+        password_show: req.body.password_show,
+        role: req.body.role,
+    }
+
+    // admin.password_show =  req.body.password_show,
+    // admin.password = bcrypt.hashSync(req.body.password_show, 10),
+
+    Admin.findByIdAndUpdate(id, admin, {new: true}, (err, admin) => {
+        if(err) throw err;
+        if(!admin){
+            return res.json({
+                ok:false,
+                mensaje: 'Invalid data'
+            })
+        }
+        res.json({
+            ok: true, 
+            admin 
+        })
+    })
+});
 
 
 

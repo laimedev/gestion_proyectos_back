@@ -1,16 +1,8 @@
 import { Usuario } from "./usuario.model";
-
-// const { Schema, model } = require('mongoose');
-
-
 import { Schema, Document, model} from 'mongoose';
-
 import  bcrypt  from 'bcrypt';
 
-
 const AdminSchema = new Schema({
-
-
     nombre: {
          type: String,
          required: true
@@ -59,18 +51,12 @@ AdminSchema.method('toJSON', function() {
     return Object;
 })
 
-
-// module.exports = model('Admin', AdminSchema);
-
 interface IAdmin extends Document {
     nombre: string;
     email: string;
     role: string;
-    // sedeATP: string;
     password: string;
     password_show: string;
-    google: Boolean;
 }
-
 
 export const Admin = model<IAdmin>('Admin', AdminSchema);
