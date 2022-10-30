@@ -26,6 +26,9 @@ const personalSchema = new Schema({
     cargo: {
         type: Number,
     },
+    pago: {
+        type: Number,
+    },
     email: {
         type: String,
     },
@@ -66,6 +69,7 @@ interface IPersonal extends Document {
     sexo: string;
     departamento: number;
     cargo: number;
+    pago: number;
     email: string;
     password: string;
     password_show: string;

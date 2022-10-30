@@ -27,6 +27,9 @@ const personalSchema = new mongoose_1.Schema({
     cargo: {
         type: Number,
     },
+    pago: {
+        type: Number,
+    },
     email: {
         type: String,
     },

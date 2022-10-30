@@ -130,6 +130,7 @@ personalRouter.post('/update/:id', (req: any, res: Response) => {
         departamento: req.body.departamento,
         fecha_nacimiento: req.body.fecha_nacimiento,
         cargo: req.body.cargo,
+        pago: req.body.pago,
         email: req.body.email,
         avatar: req.body.avatar,
         estado: req.body.estado,
