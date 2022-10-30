@@ -168,7 +168,8 @@ adminRouter.post('/login',
 
 
 //Obetner Administradores
-adminRouter.get('/', validarJWT, async (req: any, res: any) => {
+adminRouter.get('/', async (req: any, res: any) => {
+// adminRouter.get('/', validarJWT, async (req: any, res: any) => {
 
 
     const desde =  Number(req.query.desde) || 0;
@@ -202,6 +203,11 @@ adminRouter.get('/', validarJWT, async (req: any, res: any) => {
 
     
 });
+
+
+
+
+
 
 
 

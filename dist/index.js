@@ -29,6 +29,7 @@ server.app.use('/trabajo', require('./routes/trabajo'));
 server.app.use('/personal', require('./routes/personal'));
 server.app.use('/departamento', require('./routes/departamento'));
 server.app.use('/cargo', require('./routes/cargo'));
+server.app.use('/cliente', require('./routes/cliente'));
 server.app.use('/configuracion', require('./routes/configuracion'));
 mongoose_1.default.set('useFindAndModify', false);
 mongoose_1.default

@@ -15,6 +15,21 @@ const proyectosSchema = new mongoose_1.Schema({
     descripcion: {
         type: String
     },
+    responsable: {
+        type: Number
+    },
+    presupuesto: {
+        type: String
+    },
+    fecha_inicio: {
+        type: String
+    },
+    fecha_fin: {
+        type: String
+    },
+    cliente: {
+        type: String
+    },
     estado: {
         type: String,
         default: 'Nuevo'

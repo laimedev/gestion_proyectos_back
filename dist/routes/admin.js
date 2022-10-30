@@ -132,7 +132,8 @@ adminRouter.post('/login', [
     }
 }));
 //Obetner Administradores
-adminRouter.get('/', validarJWT, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+adminRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // adminRouter.get('/', validarJWT, async (req: any, res: any) => {
     const desde = Number(req.query.desde) || 0;
     console.log(desde);
     // const admin = await Admin.find({}, 'nombre email role google')

@@ -70,6 +70,11 @@ proyectoRouter.post('/update/:id', (req, res) => {
         nombre: req.body.nombre,
         descripcion: req.body.descripcion,
         estado: req.body.estado,
+        responsable: req.body.responsable,
+        presupuesto: req.body.presupuesto,
+        fecha_inicio: req.body.fecha_inicio,
+        fecha_fin: req.body.fecha_fin,
+        cliente: req.body.cliente,
     };
     proyectos_model_1.Proyecto.findByIdAndUpdate(id, proyecto, { new: true }, (err, proyecto) => {
         if (err)

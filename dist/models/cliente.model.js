@@ -1,58 +1,46 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Personal = void 0;
+exports.Cliente = void 0;
 const mongoose_1 = require("mongoose");
 var mongoose = require('mongoose');
 var autoIncrement = require('mongoose-auto-increment');
-const personalSchema = new mongoose_1.Schema({
+const clienteSchema = new mongoose_1.Schema({
     created: {
         type: Date
     },
-    nombres: {
+    razonSocial: {
         type: String,
         required: true
     },
-    apellidos: {
+    ruc: {
         type: String
     },
-    fecha_nacimiento: {
+    condicion: {
         type: String
     },
-    sexo: {
+    direccion: {
         type: String,
     },
     departamento: {
-        type: Number,
-    },
-    cargo: {
-        type: Number,
-    },
-    email: {
         type: String,
     },
-    password: {
+    provincia: {
         type: String,
     },
-    password_show: {
+    distrito: {
         type: String,
     },
-    avatar: {
+    telefono: {
         type: String,
     },
-    estado: {
+    correo: {
         type: String,
-        default: 'Activo'
-    },
-    role: {
-        type: String,
-        required: true,
-        default: '1'
     }
 });
-personalSchema.pre('save', function (next) {
+clienteSchema.pre('save', function (next) {
     this.created = new Date();
     next();
 });
 autoIncrement.initialize(mongoose.connection); // 3. initialize autoIncrement 
-personalSchema.plugin(autoIncrement.plugin, 'Personal');
-exports.Personal = (0, mongoose_1.model)('Personal', personalSchema);
+clienteSchema.plugin(autoIncrement.plugin, 'Cliente');
+exports.Cliente = (0, mongoose_1.model)('Cliente', clienteSchema);

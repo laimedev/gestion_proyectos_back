@@ -21,10 +21,10 @@ const personalSchema = new Schema({
         type: String,
     },
     departamento: {
-        type: String,
+        type: Number,
     },
     cargo: {
-        type: String,
+        type: Number,
     },
     email: {
         type: String,
@@ -64,8 +64,8 @@ interface IPersonal extends Document {
     apellidos: string;
     fecha_nacimiento: string;
     sexo: string;
-    departamento: string;
-    cargo: string;
+    departamento: number;
+    cargo: number;
     email: string;
     password: string;
     password_show: string;

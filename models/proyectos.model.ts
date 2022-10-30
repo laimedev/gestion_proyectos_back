@@ -14,6 +14,21 @@ const proyectosSchema = new Schema({
     descripcion: {
         type: String
     },
+    responsable: {
+        type: Number
+    },
+    presupuesto: {
+        type: String
+    },
+    fecha_inicio: {
+        type: String
+    },
+    fecha_fin: {
+        type: String
+    },
+    cliente: {
+        type: String
+    },
     estado: {
         type: String,
         default: 'Nuevo'
@@ -33,6 +48,11 @@ interface IProyecto extends Document {
     created: Date,
     nombre: string;
     descipcion: string;
+    responsable: number;
+    presupuesto: string;
+    fecha_inicio: string;
+    fecha_fin: string;
+    cliente: string;
     estado: string;
 }
 
