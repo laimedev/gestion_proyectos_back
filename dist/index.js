@@ -25,7 +25,11 @@ server.app.use('/user', usuario_1.default);
 server.app.use('/user1', user_1.default);
 server.app.use('/admin', require('./routes/admin'));
 server.app.use('/proyecto', require('./routes/proyecto'));
+server.app.use('/trabajo', require('./routes/trabajo'));
 server.app.use('/personal', require('./routes/personal'));
+server.app.use('/departamento', require('./routes/departamento'));
+server.app.use('/cargo', require('./routes/cargo'));
+server.app.use('/configuracion', require('./routes/configuracion'));
 mongoose_1.default.set('useFindAndModify', false);
 mongoose_1.default
     .connect('mongodb+srv://developer:developer@cluster0.sqf1s.mongodb.net/gestion_app?retryWrites=true&w=majority', {

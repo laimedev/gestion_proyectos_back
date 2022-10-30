@@ -25,7 +25,13 @@ server.app.use('/user', userRoutes);
 server.app.use('/user1', user1Routes);
 server.app.use('/admin', require('./routes/admin'));
 server.app.use('/proyecto', require('./routes/proyecto'));
+server.app.use('/trabajo', require('./routes/trabajo'));
 server.app.use('/personal', require('./routes/personal'));
+
+server.app.use('/departamento', require('./routes/departamento'));
+server.app.use('/cargo', require('./routes/cargo'));
+server.app.use('/configuracion', require('./routes/configuracion'));
+
 
 mongoose.set('useFindAndModify', false);
 mongoose
