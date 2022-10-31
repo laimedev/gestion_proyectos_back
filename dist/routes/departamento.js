@@ -110,4 +110,15 @@ departamentoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0
         });
     }
 }));
+//Exportar Excel
+departamentoRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const [data] = yield Promise.all([
+        departamento_1.Departamento.find({})
+            .sort({ id: -1 })
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
+}));
 module.exports = departamentoRouter;

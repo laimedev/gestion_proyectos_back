@@ -132,4 +132,17 @@ clienteRouter.delete('/:id', async (req: any, res: any) => {
 });
 
 
+//Exportar Excel
+clienteRouter.get('/exportar', async (req: any, res: any) => {
+    const [ data ] =  await Promise.all([
+                                    Cliente.find({})
+                                    .sort({id: -1})    
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
+});
+
+
 module.exports =  clienteRouter;

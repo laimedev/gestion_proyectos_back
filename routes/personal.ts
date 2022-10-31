@@ -60,7 +60,9 @@ personalRouter.post('/login',
             ok: true,
             // msg: 'Hola Laime esto es LOGIN'
             token,
-            user: personalDB.nombres,
+            id: personalDB._id,
+            role: personalDB.role,
+            user: personalDB.nombres + ' ' +personalDB.apellidos,
             menu: getMenuFrontEnd(personalDB.role)
         })
 
@@ -176,5 +178,17 @@ personalRouter.delete('/:id', async (req: any, res: any) => {
 
 });
 
+
+//Exportar Excel
+personalRouter.get('/exportar', async (req: any, res: any) => {
+    const [ data ] =  await Promise.all([
+                                    Personal.find({})
+                                    .sort({id: -1})    
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
+});
 
 module.exports =  personalRouter;

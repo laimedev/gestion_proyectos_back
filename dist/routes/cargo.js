@@ -110,4 +110,15 @@ cargoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
 }));
+//Exportar Excel
+cargoRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const [data] = yield Promise.all([
+        cargo_1.Cargo.find({})
+            .sort({ id: -1 })
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
+}));
 module.exports = cargoRouter;

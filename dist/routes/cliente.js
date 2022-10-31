@@ -120,4 +120,15 @@ clienteRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 }));
+//Exportar Excel
+clienteRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const [data] = yield Promise.all([
+        cliente_model_1.Cliente.find({})
+            .sort({ id: -1 })
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
+}));
 module.exports = clienteRouter;

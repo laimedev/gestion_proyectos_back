@@ -69,6 +69,12 @@ configuracionRouter.post('/update/:id', (req, res) => {
     const configuracion = {
         titulo: req.body.titulo,
         descripcion: req.body.descripcion,
+        ruc: req.body.ruc,
+        razonSocial: req.body.razonSocial,
+        direccion: req.body.direccion,
+        telefono: req.body.telefono,
+        correo: req.body.correo,
+        web: req.body.web,
         logo: req.body.logo,
     };
     configuraciones_1.Configuracion.findByIdAndUpdate(id, configuracion, { new: true }, (err, configuracion) => {

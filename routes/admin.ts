@@ -149,6 +149,7 @@ adminRouter.post('/login',
             // msg: 'Hola Laime esto es LOGIN'
             token,
             user: adminDB.nombre,
+            role: adminDB.role,
             menu: getMenuFrontEnd(adminDB.role)
         
 

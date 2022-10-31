@@ -106,4 +106,17 @@ cargoRouter.delete('/:id', async (req: any, res: any) => {
 });
 
 
+//Exportar Excel
+cargoRouter.get('/exportar', async (req: any, res: any) => {
+    const [ data ] =  await Promise.all([
+                                    Cargo.find({})
+                                    .sort({id: -1})    
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
+});
+
+
 module.exports =  cargoRouter;

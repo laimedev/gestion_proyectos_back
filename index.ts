@@ -28,11 +28,15 @@ server.app.use('/proyecto', require('./routes/proyecto'));
 server.app.use('/trabajo', require('./routes/trabajo'));
 server.app.use('/personal', require('./routes/personal'));
 
+server.app.use('/reporte', require('./routes/reporte'));
+
+
 server.app.use('/departamento', require('./routes/departamento'));
 server.app.use('/cargo', require('./routes/cargo'));
 server.app.use('/cliente', require('./routes/cliente'));
 server.app.use('/configuracion', require('./routes/configuracion'));
 
+server.app.use('/todo', require('./routes/busqueda'));
 
 mongoose.set('useFindAndModify', false);
 mongoose

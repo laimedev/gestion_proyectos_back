@@ -63,6 +63,56 @@ proyectoRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0,
         }
     });
 }));
+//Obetner proyecto por ESTADOS
+proyectoRouter.post('/showByStatus', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    const desde = Number(req.query.desde) || 0;
+    proyectos_model_1.Proyecto.find({ estado: body.estado }, (err, ProyectoDB) => {
+        if (err)
+            throw err;
+        if (ProyectoDB) {
+            const proyecto = ProyectoDB; //TRAE TODOS
+            res.json({
+                ok: true,
+                proyecto,
+                mensaje: 'Proyectos encontrado!!'
+            });
+        }
+        else {
+            res.json({
+                ok: false,
+                mensaje: 'Proyectos no encontrado en nuestro sistema!'
+            });
+        }
+    }).sort({ _id: -1 })
+        .skip(desde)
+        .limit(5);
+}));
+//Obetner proyecto por PERSONAL
+proyectoRouter.post('/showByPersonal', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    const desde = Number(req.query.desde) || 0;
+    proyectos_model_1.Proyecto.find({ responsable: body.responsable }, (err, ProyectoDB) => {
+        if (err)
+            throw err;
+        if (ProyectoDB) {
+            const proyecto = ProyectoDB; //TRAE TODOS
+            res.json({
+                ok: true,
+                proyecto,
+                mensaje: 'Proyectos encontrado!!'
+            });
+        }
+        else {
+            res.json({
+                ok: false,
+                mensaje: 'Proyectos no encontrado en nuestro sistema!'
+            });
+        }
+    }).sort({ _id: -1 })
+        .skip(desde)
+        .limit(5);
+}));
 //Actualizar proyecto
 proyectoRouter.post('/update/:id', (req, res) => {
     const id = req.params.id;
@@ -114,5 +164,16 @@ proyectoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fu
             msg: 'Hable con el administrador'
         });
     }
+}));
+//Exportar Excel
+proyectoRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const [data] = yield Promise.all([
+        proyectos_model_1.Proyecto.find({})
+            .sort({ id: -1 })
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
 }));
 module.exports = proyectoRouter;

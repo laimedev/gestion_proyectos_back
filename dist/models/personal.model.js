@@ -49,7 +49,7 @@ const personalSchema = new mongoose_1.Schema({
     role: {
         type: String,
         required: true,
-        default: '1'
+        default: '0'
     }
 });
 personalSchema.pre('save', function (next) {

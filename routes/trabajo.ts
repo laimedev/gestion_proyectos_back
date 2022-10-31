@@ -107,4 +107,17 @@ trabajoRouter.delete('/:id', async (req: any, res: any) => {
 });
 
 
+
+//Exportar Excel
+trabajoRouter.get('/exportar', async (req: any, res: any) => {
+    const [ data ] =  await Promise.all([
+                                    Trabajo.find({})
+                                    .sort({id: -1})    
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
+});
+
 module.exports =  trabajoRouter;

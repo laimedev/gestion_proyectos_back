@@ -110,4 +110,15 @@ trabajoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 }));
+//Exportar Excel
+trabajoRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const [data] = yield Promise.all([
+        trabajo_model_1.Trabajo.find({})
+            .sort({ id: -1 })
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
+}));
 module.exports = trabajoRouter;

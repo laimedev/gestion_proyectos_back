@@ -120,6 +120,7 @@ adminRouter.post('/login', [
             // msg: 'Hola Laime esto es LOGIN'
             token,
             user: adminDB.nombre,
+            role: adminDB.role,
             menu: (0, menu_frontend_1.getMenuFrontEnd)(adminDB.role)
         });
     }

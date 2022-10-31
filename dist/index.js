@@ -27,10 +27,12 @@ server.app.use('/admin', require('./routes/admin'));
 server.app.use('/proyecto', require('./routes/proyecto'));
 server.app.use('/trabajo', require('./routes/trabajo'));
 server.app.use('/personal', require('./routes/personal'));
+server.app.use('/reporte', require('./routes/reporte'));
 server.app.use('/departamento', require('./routes/departamento'));
 server.app.use('/cargo', require('./routes/cargo'));
 server.app.use('/cliente', require('./routes/cliente'));
 server.app.use('/configuracion', require('./routes/configuracion'));
+server.app.use('/todo', require('./routes/busqueda'));
 mongoose_1.default.set('useFindAndModify', false);
 mongoose_1.default
     .connect('mongodb+srv://developer:developer@cluster0.sqf1s.mongodb.net/gestion_app?retryWrites=true&w=majority', {

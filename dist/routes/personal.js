@@ -63,7 +63,9 @@ personalRouter.post('/login', [
             ok: true,
             // msg: 'Hola Laime esto es LOGIN'
             token,
-            user: personalDB.nombres,
+            id: personalDB._id,
+            role: personalDB.role,
+            user: personalDB.nombres + ' ' + personalDB.apellidos,
             menu: (0, menu_frontend_1.getMenuFrontEnd)(personalDB.role)
         });
     }
@@ -166,5 +168,16 @@ personalRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fu
             msg: 'Hable con el administrador'
         });
     }
+}));
+//Exportar Excel
+personalRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const [data] = yield Promise.all([
+        personal_model_1.Personal.find({})
+            .sort({ id: -1 })
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
 }));
 module.exports = personalRouter;

@@ -37,6 +37,7 @@ proyectoRouter.get('/show', async (req: any, res: any) => {
 //Obetner 1 proyecto por ID
 proyectoRouter.post('/showByID', async (req: any, res: any) => {
     const body = req.body;
+
     Proyecto.find({_id:body._id} , (err, ProyectoDB) => {
         if( err ) throw err;
         if( ProyectoDB ) {
@@ -53,6 +54,62 @@ proyectoRouter.post('/showByID', async (req: any, res: any) => {
             });
         }
     }) 
+});
+
+
+
+//Obetner proyecto por ESTADOS
+proyectoRouter.post('/showByStatus', async (req: any, res: any) => {
+    const body = req.body;
+    const desde =  Number(req.query.desde) || 0;
+
+    Proyecto.find({estado:body.estado} , (err, ProyectoDB) => {
+        if( err ) throw err;
+        if( ProyectoDB ) {
+            const proyecto = ProyectoDB;  //TRAE TODOS
+            res.json({
+                ok: true,
+                proyecto,
+                mensaje: 'Proyectos encontrado!!'
+            });
+        } else {
+            res.json({
+                ok: false,
+                mensaje: 'Proyectos no encontrado en nuestro sistema!'
+            });
+        }
+    }) .sort({_id: -1})          
+    .skip( desde )
+    .limit( 5 ) 
+});
+
+
+
+
+
+//Obetner proyecto por PERSONAL
+proyectoRouter.post('/showByPersonal', async (req: any, res: any) => {
+    const body = req.body;
+    const desde =  Number(req.query.desde) || 0;
+
+    Proyecto.find({responsable:body.responsable} , (err, ProyectoDB) => {
+        if( err ) throw err;
+        if( ProyectoDB ) {
+            const proyecto = ProyectoDB;  //TRAE TODOS
+            res.json({
+                ok: true,
+                proyecto,
+                mensaje: 'Proyectos encontrado!!'
+            });
+        } else {
+            res.json({
+                ok: false,
+                mensaje: 'Proyectos no encontrado en nuestro sistema!'
+            });
+        }
+    }) .sort({_id: -1})          
+    .skip( desde )
+    .limit( 5 ) 
 });
 
 
@@ -108,6 +165,20 @@ proyectoRouter.delete('/:id', async (req: any, res: any) => {
         })
     }
 
+});
+
+
+
+//Exportar Excel
+proyectoRouter.get('/exportar', async (req: any, res: any) => {
+    const [ data ] =  await Promise.all([
+                                    Proyecto.find({})
+                                    .sort({id: -1})    
+    ]);
+    res.json({
+        ok: true,
+        data,
+    });
 });
 
 
