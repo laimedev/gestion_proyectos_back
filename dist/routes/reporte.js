@@ -16,7 +16,7 @@ const reporteRouter = (0, express_1.Router)();
 //crear reporte 
 reporteRouter.post('/', (req, res) => {
     const body = req.body;
-    proyectos_model_1.Proyecto.create(body).then(ReporteDB => {
+    reporte_model_1.Reporte.create(body).then(ReporteDB => {
         res.json({
             ok: true,
             reporte: ReporteDB
@@ -62,29 +62,31 @@ reporteRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, funct
 //         }
 //     }) 
 // });
-//Obetner proyecto por ESTADOS
-// proyectoRouter.post('/showByStatus', async (req: any, res: any) => {
-//     const body = req.body;
-//     const desde =  Number(req.query.desde) || 0;
-//     Proyecto.find({estado:body.estado} , (err, ProyectoDB) => {
-//         if( err ) throw err;
-//         if( ProyectoDB ) {
-//             const proyecto = ProyectoDB;  //TRAE TODOS
-//             res.json({
-//                 ok: true,
-//                 proyecto,
-//                 mensaje: 'Proyectos encontrado!!'
-//             });
-//         } else {
-//             res.json({
-//                 ok: false,
-//                 mensaje: 'Proyectos no encontrado en nuestro sistema!'
-//             });
-//         }
-//     }) .sort({_id: -1})          
-//     .skip( desde )
-//     .limit( 5 ) 
-// });
+// Obetner reportes por PROYECTOS
+reporteRouter.post('/showByProyecto', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    const desde = Number(req.query.desde) || 0;
+    reporte_model_1.Reporte.find({ proyectoID: body.proyectoID }, (err, ReporteDB) => {
+        if (err)
+            throw err;
+        if (ReporteDB) {
+            const reporte = ReporteDB; //TRAE TODOS
+            res.json({
+                ok: true,
+                reporte,
+                mensaje: 'Reportes encontrado!!'
+            });
+        }
+        else {
+            res.json({
+                ok: false,
+                mensaje: 'Reportes no encontrado en nuestro sistema!'
+            });
+        }
+    }).sort({ _id: -1 })
+        .skip(desde)
+        .limit(5);
+}));
 //Obetner proyecto por PERSONAL
 // proyectoRouter.post('/showByPersonal', async (req: any, res: any) => {
 //     const body = req.body;

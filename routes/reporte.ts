@@ -6,7 +6,7 @@ const reporteRouter = Router();
 //crear reporte 
 reporteRouter.post('/' , (req: any, res: Response ) => {
     const body = req.body;
-    Proyecto.create(body).then(ReporteDB => {
+    Reporte.create(body).then(ReporteDB => {
         res.json ({
             ok:true,
             reporte: ReporteDB
@@ -59,30 +59,30 @@ reporteRouter.get('/show', async (req: any, res: any) => {
 
 
 
-//Obetner proyecto por ESTADOS
-// proyectoRouter.post('/showByStatus', async (req: any, res: any) => {
-//     const body = req.body;
-//     const desde =  Number(req.query.desde) || 0;
+// Obetner reportes por PROYECTOS
+reporteRouter.post('/showByProyecto', async (req: any, res: any) => {
+    const body = req.body;
+    const desde =  Number(req.query.desde) || 0;
 
-//     Proyecto.find({estado:body.estado} , (err, ProyectoDB) => {
-//         if( err ) throw err;
-//         if( ProyectoDB ) {
-//             const proyecto = ProyectoDB;  //TRAE TODOS
-//             res.json({
-//                 ok: true,
-//                 proyecto,
-//                 mensaje: 'Proyectos encontrado!!'
-//             });
-//         } else {
-//             res.json({
-//                 ok: false,
-//                 mensaje: 'Proyectos no encontrado en nuestro sistema!'
-//             });
-//         }
-//     }) .sort({_id: -1})          
-//     .skip( desde )
-//     .limit( 5 ) 
-// });
+    Reporte.find({proyectoID:body.proyectoID} , (err, ReporteDB) => {
+        if( err ) throw err;
+        if( ReporteDB ) {
+            const reporte = ReporteDB;  //TRAE TODOS
+            res.json({
+                ok: true,
+                reporte,
+                mensaje: 'Reportes encontrado!!'
+            });
+        } else {
+            res.json({
+                ok: false,
+                mensaje: 'Reportes no encontrado en nuestro sistema!'
+            });
+        }
+    }) .sort({_id: -1})          
+    .skip( desde )
+    .limit( 5 ) 
+});
 
 
 

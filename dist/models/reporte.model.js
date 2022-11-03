@@ -16,10 +16,10 @@ const reportesSchema = new mongoose_1.Schema({
         type: String
     },
     fecha_hasta: {
-        type: Number
+        type: String
     },
     horas: {
-        type: String
+        type: Number
     },
     observacion: {
         type: String

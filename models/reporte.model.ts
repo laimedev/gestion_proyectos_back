@@ -15,10 +15,10 @@ const reportesSchema = new Schema({
         type: String
     },
     fecha_hasta: {
-        type: Number
+        type: String
     },
     horas: {
-        type: String
+        type: Number
     },
     observacion: {
         type: String
@@ -51,7 +51,7 @@ interface IReporte extends Document {
     trabajo: string;
     fecha_desde: string;
     fecha_hasta: string;
-    horas: string;
+    horas: number;
     observacion: string;
     proyectoNombre: string;
     proyectoID: number;
