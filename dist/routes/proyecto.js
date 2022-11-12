@@ -27,11 +27,12 @@ proyectoRouter.post('/', (req, res) => {
 //Obetner proyecto
 proyectoRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
+    const limit = Number(req.query.limit) || 5;
     const [proyecto, total] = yield Promise.all([
         proyectos_model_1.Proyecto.find()
             .sort({ _id: -1 })
             .skip(desde)
-            .limit(5),
+            .limit(limit),
         proyectos_model_1.Proyecto.countDocuments()
     ]);
     res.json({
@@ -125,6 +126,7 @@ proyectoRouter.post('/update/:id', (req, res) => {
         fecha_inicio: req.body.fecha_inicio,
         fecha_fin: req.body.fecha_fin,
         cliente: req.body.cliente,
+        cotizacion: req.body.cotizacion,
     };
     proyectos_model_1.Proyecto.findByIdAndUpdate(id, proyecto, { new: true }, (err, proyecto) => {
         if (err)

@@ -19,11 +19,12 @@ reporteRouter.post('/' , (req: any, res: Response ) => {
 //Obetner reporte
 reporteRouter.get('/show', async (req: any, res: any) => {
     const desde =  Number(req.query.desde) || 0;
+    const limit =  Number(req.query.limit) || 5;
     const [ reporte, total] =  await Promise.all([
                                     Reporte.find()
                                     .sort({_id: -1})          
                                     .skip( desde )
-                                    .limit( 5 ),
+                                    .limit( limit ),
                                     Reporte.countDocuments()
     ]);
     res.json({
@@ -33,6 +34,31 @@ reporteRouter.get('/show', async (req: any, res: any) => {
         id: req.id 
     });
 });
+
+
+reporteRouter.post('/showRangeDate', async (req: any, res: any) => {
+    var query = {
+        // username: req.body.username,
+        created: {
+            $gte: new Date(req.body.fecha_inicio).toISOString(),
+            $lte: new Date(req.body.fecha_fin).toISOString()
+        },
+        leave: { $exists: false }
+    }
+
+    Reporte.find(query, function (err, data) {
+        if (err) { return res.status(300).json("Error") }
+        else {
+            return res.status(200).json({ data: data })
+        }
+    })
+});
+
+
+// fetchHistorybydate = (req, res) => {
+   
+// }
+
 
 
 //Obetner 1 proyecto por ID

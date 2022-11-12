@@ -32,6 +32,9 @@ const clienteSchema = new Schema({
     telefono: {
         type: String,
     },
+    foto: {
+        type: String,
+    },
     correo: {
         type: String,
     }
@@ -56,6 +59,7 @@ interface ICliente extends Document {
     provincia: string;
     distrito: string;
     telefono: string;
+    foto: string;
     correo: string;
 }
 

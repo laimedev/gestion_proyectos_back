@@ -33,6 +33,9 @@ const clienteSchema = new mongoose_1.Schema({
     telefono: {
         type: String,
     },
+    foto: {
+        type: String,
+    },
     correo: {
         type: String,
     }

@@ -26,6 +26,9 @@ const proyectosSchema = new Schema({
     fecha_fin: {
         type: String
     },
+    cotizacion: {
+        type: String
+    },
     cliente: {
         type: Number
     },
@@ -53,6 +56,7 @@ interface IProyecto extends Document {
     fecha_inicio: string;
     fecha_fin: string;
     cliente: number;
+    cotizacion: string;
     estado: string;
 }
 

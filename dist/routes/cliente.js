@@ -79,6 +79,7 @@ clienteRouter.post('/update/:id', (req, res) => {
         provincia: req.body.provincia,
         distrito: req.body.distrito,
         telefono: req.body.telefono,
+        foto: req.body.foto,
         correo: req.body.correo,
     };
     cliente_model_1.Cliente.findByIdAndUpdate(id, cliente, { new: true }, (err, cliente) => {

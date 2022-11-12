@@ -28,11 +28,12 @@ reporteRouter.post('/', (req, res) => {
 //Obetner reporte
 reporteRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
+    const limit = Number(req.query.limit) || 5;
     const [reporte, total] = yield Promise.all([
         reporte_model_1.Reporte.find()
             .sort({ _id: -1 })
             .skip(desde)
-            .limit(5),
+            .limit(limit),
         reporte_model_1.Reporte.countDocuments()
     ]);
     res.json({
@@ -42,6 +43,26 @@ reporteRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, funct
         id: req.id
     });
 }));
+reporteRouter.post('/showRangeDate', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var query = {
+        // username: req.body.username,
+        created: {
+            $gte: new Date(req.body.fecha_inicio).toISOString(),
+            $lte: new Date(req.body.fecha_fin).toISOString()
+        },
+        leave: { $exists: false }
+    };
+    reporte_model_1.Reporte.find(query, function (err, data) {
+        if (err) {
+            return res.status(300).json("Error");
+        }
+        else {
+            return res.status(200).json({ data: data });
+        }
+    });
+}));
+// fetchHistorybydate = (req, res) => {
+// }
 //Obetner 1 proyecto por ID
 // reporteRouter.post('/showByID', async (req: any, res: any) => {
 //     const body = req.body;
