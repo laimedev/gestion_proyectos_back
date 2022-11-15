@@ -14,6 +14,9 @@ const trabajosSchema = new Schema({
     descripcion: {
         type: String
     },
+    costo: {
+        type: Number
+    },
     estado: {
         type: String,
         default: 'Nuevo'
@@ -32,7 +35,8 @@ trabajosSchema.pre<ITrabajo>('save', function( next ) {
 interface ITrabajo extends Document {
     created: Date,
     nombre: string;
-    descipcion: string;
+    descripcion: string;
+    costo: number;
     estado: string;
 }
 

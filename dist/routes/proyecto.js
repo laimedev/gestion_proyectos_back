@@ -126,6 +126,12 @@ proyectoRouter.post('/update/:id', (req, res) => {
         fecha_inicio: req.body.fecha_inicio,
         fecha_fin: req.body.fecha_fin,
         cliente: req.body.cliente,
+        fecha_termino: req.body.fecha_termino,
+        ev: req.body.ev,
+        pv: req.body.pv,
+        sv: req.body.sv,
+        ac: req.body.ac,
+        cv: req.body.cv,
         cotizacion: req.body.cotizacion,
     };
     proyectos_model_1.Proyecto.findByIdAndUpdate(id, proyecto, { new: true }, (err, proyecto) => {
@@ -143,7 +149,54 @@ proyectoRouter.post('/update/:id', (req, res) => {
         });
     });
 });
-//Eliminar Curso
+//Actualizar proyecto cerrar
+proyectoRouter.post('/update_cerrar/:id', (req, res) => {
+    const id = req.params.id;
+    const proyecto = {
+        fecha_inicio: req.body.fecha_inicio,
+        fecha_fin: req.body.fecha_fin,
+        fecha_termino: req.body.fecha_termino,
+        ev: req.body.ev,
+        pv: req.body.pv,
+        sv: req.body.sv,
+        ac: req.body.ac,
+        cv: req.body.cv,
+    };
+    proyectos_model_1.Proyecto.findByIdAndUpdate(id, proyecto, { new: true }, (err, proyecto) => {
+        if (err)
+            throw err;
+        if (!proyecto) {
+            return res.json({
+                ok: false,
+                mensaje: 'Invalid data'
+            });
+        }
+        res.json({
+            ok: true,
+            proyecto
+        });
+    });
+});
+//Obtener rangos Proyecto
+proyectoRouter.post('/showRangeDate', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var query = {
+        // username: req.body.username,
+        fecha_inicio: {
+            $gte: new Date(req.body.fecha_inicio).toISOString(),
+            $lte: new Date(req.body.fecha_fin).toISOString()
+        },
+        leave: { $exists: false }
+    };
+    proyectos_model_1.Proyecto.find(query, function (err, data) {
+        if (err) {
+            return res.status(300).json("Error");
+        }
+        else {
+            return res.status(200).json({ data: data });
+        }
+    });
+}));
+//Eliminar Proyecto
 proyectoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {

@@ -15,6 +15,9 @@ const trabajosSchema = new mongoose_1.Schema({
     descripcion: {
         type: String
     },
+    costo: {
+        type: Number
+    },
     estado: {
         type: String,
         default: 'Nuevo'

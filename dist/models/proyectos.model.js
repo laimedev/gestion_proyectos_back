@@ -27,10 +27,28 @@ const proyectosSchema = new mongoose_1.Schema({
     fecha_fin: {
         type: String
     },
+    fecha_termino: {
+        type: String
+    },
     cotizacion: {
         type: String
     },
     cliente: {
+        type: Number
+    },
+    ev: {
+        type: Number
+    },
+    pv: {
+        type: Number
+    },
+    sv: {
+        type: Number
+    },
+    ac: {
+        type: Number
+    },
+    cv: {
         type: Number
     },
     estado: {

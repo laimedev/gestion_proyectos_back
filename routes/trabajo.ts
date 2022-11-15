@@ -63,6 +63,7 @@ trabajoRouter.post('/update/:id', (req: any, res: Response) => {
     const trabajo = {
         nombre: req.body.nombre,
         descripcion: req.body.descripcion,
+        costo: req.body.costo,
         estado: req.body.estado,
     }
     Trabajo.findByIdAndUpdate(id, trabajo, {new: true}, (err, trabajo) => {

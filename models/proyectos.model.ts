@@ -26,10 +26,28 @@ const proyectosSchema = new Schema({
     fecha_fin: {
         type: String
     },
+    fecha_termino: {
+        type: String
+    },
     cotizacion: {
         type: String
     },
     cliente: {
+        type: Number
+    },
+    ev: {
+        type: Number
+    },
+    pv: {
+        type: Number
+    },
+    sv: {
+        type: Number
+    },
+    ac: {
+        type: Number
+    },
+    cv: {
         type: Number
     },
     estado: {
@@ -57,6 +75,15 @@ interface IProyecto extends Document {
     fecha_fin: string;
     cliente: number;
     cotizacion: string;
+    fecha_termino: string;
+    ev: number;
+    pv: number;
+    sv: number;
+
+    ac: number;
+    cv: number;
+
+
     estado: string;
 }
 
