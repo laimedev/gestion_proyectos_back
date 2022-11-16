@@ -18,6 +18,9 @@ const reportesSchema = new mongoose_1.Schema({
     fecha_hasta: {
         type: String
     },
+    fecha_fin: {
+        type: String
+    },
     horas: {
         type: Number
     },
@@ -35,6 +38,24 @@ const reportesSchema = new mongoose_1.Schema({
     },
     personalID: {
         type: Number,
+    },
+    ev: {
+        type: Number
+    },
+    pv: {
+        type: Number
+    },
+    sv: {
+        type: Number
+    },
+    ac: {
+        type: Number
+    },
+    cv: {
+        type: Number
+    },
+    presupuesto: {
+        type: Number
     }
 });
 reportesSchema.pre('save', function (next) {

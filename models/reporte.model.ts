@@ -17,6 +17,9 @@ const reportesSchema = new Schema({
     fecha_hasta: {
         type: String
     },
+    fecha_fin: {
+        type: String
+    },
     horas: {
         type: Number
     },
@@ -34,6 +37,24 @@ const reportesSchema = new Schema({
     },
     personalID: {
         type: Number,
+    },
+    ev: {
+        type: Number
+    },
+    pv: {
+        type: Number
+    },
+    sv: {
+        type: Number
+    },
+    ac: {
+        type: Number
+    },
+    cv: {
+        type: Number
+    },
+    presupuesto: {
+        type: Number
     }
 });
 
@@ -51,12 +72,19 @@ interface IReporte extends Document {
     trabajo: string;
     fecha_desde: string;
     fecha_hasta: string;
+    fecha_fin: string;
     horas: number;
     observacion: string;
     proyectoNombre: string;
     proyectoID: number;
     personalNombre: string;
     personalID: number;
+    ev: number;
+    pv: number;
+    sv: number;
+    ac: number;
+    cv: number;
+    presupuesto: number;
 }
 
 

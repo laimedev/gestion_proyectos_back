@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const proyectos_model_1 = require("../models/proyectos.model");
 const reporte_model_1 = require("../models/reporte.model");
 const reporteRouter = (0, express_1.Router)();
 //crear reporte 
@@ -158,6 +157,35 @@ reporteRouter.post('/showByProyecto', (req, res) => __awaiter(void 0, void 0, vo
 //         })
 //     })
 // });
+//Actualizar reporte cerrar
+reporteRouter.post('/update_cerrar/:id', (req, res) => {
+    const id = req.params.id;
+    const reporte = {
+        fecha_desde: req.body.fecha_desde,
+        fecha_hasta: req.body.fecha_hasta,
+        fecha_fin: req.body.fecha_fin,
+        fecha_termino: req.body.fecha_termino,
+        ev: req.body.ev,
+        pv: req.body.pv,
+        sv: req.body.sv,
+        ac: req.body.ac,
+        cv: req.body.cv,
+    };
+    reporte_model_1.Reporte.findByIdAndUpdate(id, reporte, { new: true }, (err, reporte) => {
+        if (err)
+            throw err;
+        if (!reporte) {
+            return res.json({
+                ok: false,
+                mensaje: 'Invalid data'
+            });
+        }
+        res.json({
+            ok: true,
+            reporte
+        });
+    });
+});
 //Eliminar Curso
 reporteRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
@@ -169,7 +197,7 @@ reporteRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fun
                 msg: 'Reporte no encontrada por identificador'
             });
         }
-        yield proyectos_model_1.Proyecto.findByIdAndDelete(id);
+        yield reporte_model_1.Reporte.findByIdAndDelete(id);
         res.json({
             ok: true,
             msg: 'Reporte eliminado'

@@ -169,6 +169,37 @@ reporteRouter.post('/showByProyecto', async (req: any, res: any) => {
 // });
 
 
+
+//Actualizar reporte cerrar
+reporteRouter.post('/update_cerrar/:id', (req: any, res: Response) => {
+    const id=req.params.id;
+    const reporte = {
+        fecha_desde: req.body.fecha_desde,
+        fecha_hasta: req.body.fecha_hasta,
+        fecha_fin: req.body.fecha_fin,
+        fecha_termino: req.body.fecha_termino,
+        ev: req.body.ev,
+        pv: req.body.pv,
+        sv: req.body.sv,
+        ac: req.body.ac,
+        cv: req.body.cv,
+    }
+    Reporte.findByIdAndUpdate(id, reporte, {new: true}, (err, reporte) => {
+        if(err) throw err;
+        if(!reporte){
+            return res.json({
+                ok:false,
+                mensaje: 'Invalid data'
+            })
+        }
+        res.json({
+            ok: true, 
+            reporte 
+        })
+    })
+});
+
+
 //Eliminar Curso
 reporteRouter.delete('/:id', async (req: any, res: any) => {
     const id = req.params.id;
@@ -180,7 +211,7 @@ reporteRouter.delete('/:id', async (req: any, res: any) => {
                 msg: 'Reporte no encontrada por identificador'
             });
         }
-        await Proyecto.findByIdAndDelete(id);
+        await Reporte.findByIdAndDelete(id);
         res.json({
             ok: true,
             msg: 'Reporte eliminado'
