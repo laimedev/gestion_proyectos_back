@@ -10,61 +10,83 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const tarea_model_1 = require("../models/tarea.model");
 const trabajo_model_1 = require("../models/trabajo.model");
-const trabajoRouter = (0, express_1.Router)();
+const tareaRouter = (0, express_1.Router)();
 //crear trabajo 
-trabajoRouter.post('/', (req, res) => {
+tareaRouter.post('/', (req, res) => {
     const body = req.body;
-    trabajo_model_1.Trabajo.create(body).then(TrabajoDB => {
+    tarea_model_1.Tarea.create(body).then(TareaDB => {
         res.json({
             ok: true,
-            trabajo: TrabajoDB
+            tarea: TareaDB
         });
     }).catch(err => {
         res.json(err);
     });
 });
 //Obetner trabajo
-trabajoRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+tareaRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
-    const [trabajo, total] = yield Promise.all([
-        trabajo_model_1.Trabajo.find()
+    const [tarea, total] = yield Promise.all([
+        tarea_model_1.Tarea.find()
             .sort({ _id: -1 })
             .skip(desde)
             .limit(5),
-        trabajo_model_1.Trabajo.countDocuments()
+        tarea_model_1.Tarea.countDocuments()
     ]);
     res.json({
         ok: true,
-        trabajo,
+        tarea,
         total,
         id: req.id
     });
 }));
-//Obetner 1 Trabajo por ID
-trabajoRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+tareaRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
-    trabajo_model_1.Trabajo.find({ _id: body._id }, (err, TrabajoDB) => {
+    tarea_model_1.Tarea.find({ _id: body._id }, (err, TareaDB) => {
         if (err)
             throw err;
-        if (TrabajoDB) {
-            const trabajo = TrabajoDB; //TRAE TODOS
+        if (TareaDB) {
+            const tarea = TareaDB; //TRAE TODOS
             res.json({
                 ok: true,
-                trabajo,
-                mensaje: 'Trabajo encontrado!!'
+                tarea,
+                mensaje: 'Tarea encontrado!!'
             });
         }
         else {
             res.json({
                 ok: false,
-                mensaje: 'Trabajo no encontrado en nuestro sistema!'
+                mensaje: 'Tarea no encontrado en nuestro sistema!'
+            });
+        }
+    });
+}));
+//Obetner 1 Trabajo por ID
+tareaRouter.post('/showByIDTarea', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    tarea_model_1.Tarea.find({ actividad: body.actividad }, (err, TareaDB) => {
+        if (err)
+            throw err;
+        if (TareaDB) {
+            const tarea = TareaDB; //TRAE TODOS
+            res.json({
+                ok: true,
+                tarea,
+                mensaje: 'Tareas encontrado!!'
+            });
+        }
+        else {
+            res.json({
+                ok: false,
+                mensaje: 'Tareas no encontrado en nuestro sistema!'
             });
         }
     });
 }));
 //Actualizar trabajo
-trabajoRouter.post('/update/:id', (req, res) => {
+tareaRouter.post('/update/:id', (req, res) => {
     const id = req.params.id;
     const trabajo = {
         nombre: req.body.nombre,
@@ -89,7 +111,7 @@ trabajoRouter.post('/update/:id', (req, res) => {
     });
 });
 //FILTRAR TRABAJOS POR ID DE PROYECTO
-trabajoRouter.post('/showByProyecto', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+tareaRouter.post('/showByProyecto', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
     trabajo_model_1.Trabajo.find({ proyecto: body.proyecto }, (err, TrabajoDB) => {
         if (err)
@@ -111,20 +133,20 @@ trabajoRouter.post('/showByProyecto', (req, res) => __awaiter(void 0, void 0, vo
     }).sort({ _id: -1 });
 }));
 //Eliminar trabajo
-trabajoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+tareaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const trabajo = yield trabajo_model_1.Trabajo.findById(id);
-        if (!trabajo) {
+        const tarea = yield tarea_model_1.Tarea.findById(id);
+        if (!tarea) {
             return res.status(404).json({
                 ok: true,
-                msg: 'Trabajo no encontrada por identificador'
+                msg: 'Tarea no encontrada por identificador'
             });
         }
-        yield trabajo_model_1.Trabajo.findByIdAndDelete(id);
+        yield tarea_model_1.Tarea.findByIdAndDelete(id);
         res.json({
             ok: true,
-            msg: 'Trabajo eliminado'
+            msg: 'Tarea eliminado'
         });
     }
     catch (error) {
@@ -135,7 +157,7 @@ trabajoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 }));
 //Exportar Excel
-trabajoRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+tareaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [data] = yield Promise.all([
         trabajo_model_1.Trabajo.find({})
             .sort({ id: -1 })
@@ -145,4 +167,4 @@ trabajoRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, f
         data,
     });
 }));
-module.exports = trabajoRouter;
+module.exports = tareaRouter;

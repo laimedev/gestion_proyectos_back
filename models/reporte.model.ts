@@ -41,6 +41,14 @@ const reportesSchema = new Schema({
     ev: {
         type: Number
     },
+
+    tareaNombre: {
+        type: String,
+    },
+    tareaID: {
+        type: Number,
+    },
+
     pv: {
         type: Number
     },
@@ -85,6 +93,9 @@ interface IReporte extends Document {
     ac: number;
     cv: number;
     presupuesto: number;
+
+    tareaNombre: string;
+    tareaID: number;
 }
 
 

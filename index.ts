@@ -26,6 +26,7 @@ server.app.use('/user1', user1Routes);
 server.app.use('/admin', require('./routes/admin'));
 server.app.use('/proyecto', require('./routes/proyecto'));
 server.app.use('/trabajo', require('./routes/trabajo'));
+server.app.use('/tarea', require('./routes/tarea'));
 server.app.use('/personal', require('./routes/personal'));
 
 server.app.use('/reporte', require('./routes/reporte'));

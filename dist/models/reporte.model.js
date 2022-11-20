@@ -42,6 +42,12 @@ const reportesSchema = new mongoose_1.Schema({
     ev: {
         type: Number
     },
+    tareaNombre: {
+        type: String,
+    },
+    tareaID: {
+        type: Number,
+    },
     pv: {
         type: Number
     },

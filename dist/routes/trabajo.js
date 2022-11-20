@@ -68,6 +68,7 @@ trabajoRouter.post('/update/:id', (req, res) => {
     const id = req.params.id;
     const trabajo = {
         nombre: req.body.nombre,
+        // proyecto: req.body.proyecto,
         descripcion: req.body.descripcion,
         costo: req.body.costo,
         estado: req.body.estado,
@@ -87,6 +88,28 @@ trabajoRouter.post('/update/:id', (req, res) => {
         });
     });
 });
+//FILTRAR TRABAJOS POR ID DE PROYECTO
+trabajoRouter.post('/showByProyecto', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const body = req.body;
+    trabajo_model_1.Trabajo.find({ proyecto: body.proyecto }, (err, TrabajoDB) => {
+        if (err)
+            throw err;
+        if (TrabajoDB) {
+            const trabajo = TrabajoDB; //TRAE TODOS
+            res.json({
+                ok: true,
+                trabajo,
+                mensaje: 'Trabajos encontrado!!'
+            });
+        }
+        else {
+            res.json({
+                ok: false,
+                mensaje: 'Trabajos no encontrado en nuestro sistema!'
+            });
+        }
+    }).sort({ _id: -1 });
+}));
 //Eliminar trabajo
 trabajoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;

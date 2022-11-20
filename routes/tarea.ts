@@ -1,15 +1,16 @@
 import { Router, Response, Request, response } from 'express';
 import { Proyecto } from '../models/proyectos.model';
+import { Tarea } from '../models/tarea.model';
 import { Trabajo } from '../models/trabajo.model';
-const trabajoRouter = Router();
+const tareaRouter = Router();
 
 //crear trabajo 
-trabajoRouter.post('/' , (req: any, res: Response ) => {
+tareaRouter.post('/' , (req: any, res: Response ) => {
     const body = req.body;
-    Trabajo.create(body).then(TrabajoDB => {
+    Tarea.create(body).then(TareaDB => {
         res.json ({
             ok:true,
-            trabajo: TrabajoDB
+            tarea: TareaDB
         });
     }).catch( err => {
         res.json(err)
@@ -17,40 +18,62 @@ trabajoRouter.post('/' , (req: any, res: Response ) => {
 });
 
 //Obetner trabajo
-trabajoRouter.get('/show', async (req: any, res: any) => {
+tareaRouter.get('/show', async (req: any, res: any) => {
     const desde =  Number(req.query.desde) || 0;
-    const [ trabajo, total] =  await Promise.all([
-                                    Trabajo.find()
+    const [ tarea, total] =  await Promise.all([
+                                    Tarea.find()
                                     .sort({_id: -1})          
                                     .skip( desde )
                                     .limit( 5 ),
-                                    Trabajo.countDocuments()
+                                    Tarea.countDocuments()
     ]);
     res.json({
         ok: true,
-        trabajo,
+        tarea,
         total,
         id: req.id 
     });
 });
 
 
-//Obetner 1 Trabajo por ID
-trabajoRouter.post('/showByID', async (req: any, res: any) => {
+tareaRouter.post('/showByID', async (req: any, res: any) => {
     const body = req.body;
-    Trabajo.find({_id:body._id} , (err, TrabajoDB) => {
+    Tarea.find({_id:body._id} , (err, TareaDB) => {
         if( err ) throw err;
-        if( TrabajoDB ) {
-            const trabajo = TrabajoDB;  //TRAE TODOS
+        if( TareaDB ) {
+            const tarea = TareaDB;  //TRAE TODOS
             res.json({
                 ok: true,
-                trabajo,
-                mensaje: 'Trabajo encontrado!!'
+                tarea,
+                mensaje: 'Tarea encontrado!!'
             });
         } else {
             res.json({
                 ok: false,
-                mensaje: 'Trabajo no encontrado en nuestro sistema!'
+                mensaje: 'Tarea no encontrado en nuestro sistema!'
+            });
+        }
+    }) 
+});
+
+
+
+//Obetner 1 Trabajo por ID
+tareaRouter.post('/showByIDTarea', async (req: any, res: any) => {
+    const body = req.body;
+    Tarea.find({actividad:body.actividad} , (err, TareaDB) => {
+        if( err ) throw err;
+        if( TareaDB ) {
+            const tarea = TareaDB;  //TRAE TODOS
+            res.json({
+                ok: true,
+                tarea,
+                mensaje: 'Tareas encontrado!!'
+            });
+        } else {
+            res.json({
+                ok: false,
+                mensaje: 'Tareas no encontrado en nuestro sistema!'
             });
         }
     }) 
@@ -58,7 +81,7 @@ trabajoRouter.post('/showByID', async (req: any, res: any) => {
 
 
 //Actualizar trabajo
-trabajoRouter.post('/update/:id', (req: any, res: Response) => {
+tareaRouter.post('/update/:id', (req: any, res: Response) => {
     const id=req.params.id;
     const trabajo = {
         nombre: req.body.nombre,
@@ -84,7 +107,7 @@ trabajoRouter.post('/update/:id', (req: any, res: Response) => {
 
 
 //FILTRAR TRABAJOS POR ID DE PROYECTO
-trabajoRouter.post('/showByProyecto', async (req: any, res: any) => {
+tareaRouter.post('/showByProyecto', async (req: any, res: any) => {
     const body = req.body;
 
     
@@ -109,20 +132,20 @@ trabajoRouter.post('/showByProyecto', async (req: any, res: any) => {
 
 
 //Eliminar trabajo
-trabajoRouter.delete('/:id', async (req: any, res: any) => {
+tareaRouter.delete('/:id', async (req: any, res: any) => {
     const id = req.params.id;
     try {
-        const trabajo = await Trabajo.findById(id);
-        if(!trabajo) {
+        const tarea = await Tarea.findById(id);
+        if(!tarea) {
             return res.status(404).json({
                 ok: true,
-                msg: 'Trabajo no encontrada por identificador'
+                msg: 'Tarea no encontrada por identificador'
             });
         }
-        await Trabajo.findByIdAndDelete(id);
+        await Tarea.findByIdAndDelete(id);
         res.json({
             ok: true,
-            msg: 'Trabajo eliminado'
+            msg: 'Tarea eliminado'
         });
     } catch (error) {
         res.status(500).json({
@@ -136,7 +159,7 @@ trabajoRouter.delete('/:id', async (req: any, res: any) => {
 
 
 //Exportar Excel
-trabajoRouter.get('/exportar', async (req: any, res: any) => {
+tareaRouter.get('/exportar', async (req: any, res: any) => {
     const [ data ] =  await Promise.all([
                                     Trabajo.find({})
                                     .sort({id: -1})    
@@ -147,4 +170,4 @@ trabajoRouter.get('/exportar', async (req: any, res: any) => {
     });
 });
 
-module.exports =  trabajoRouter;
+module.exports =  tareaRouter;
