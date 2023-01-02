@@ -86,7 +86,7 @@ interface IReporte extends Document {
     proyectoNombre: string;
     proyectoID: number;
     personalNombre: string;
-    personalID: number;
+    personalID: number; 
     ev: number;
     pv: number;
     sv: number;
