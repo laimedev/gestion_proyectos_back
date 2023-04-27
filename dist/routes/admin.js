@@ -26,7 +26,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const adminRouter = (0, express_1.Router)();
-const { googleVerify } = require('../helpers/google-verify');
 const admin_model_1 = require("../models/admin.model");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const menu_frontend_1 = require("../helpers/menu-frontend");
@@ -44,51 +43,6 @@ adminRouter.get('/renew', validarJWT, (req, res = express_1.response) => __await
         admin,
         menu: (0, menu_frontend_1.getMenuFrontEnd)(admin === null || admin === void 0 ? void 0 : admin.role)
     });
-}));
-//Iniciar Sesion con Google
-adminRouter.post('/login/google', [
-    (0, express_validator_1.check)('token', 'El token de google es obligatorio').not().isEmpty()
-], (req, res = express_1.response) => __awaiter(void 0, void 0, void 0, function* () {
-    const googleToken = req.body.token;
-    try {
-        yield googleVerify(googleToken);
-        const { name, email, picture } = yield googleVerify(googleToken);
-        const adminDB = yield admin_model_1.Admin.findOne({ email });
-        let admin;
-        if (!adminDB) {
-            // si no existe el usuario
-            admin = new admin_model_1.Admin({
-                nombre: name,
-                email,
-                password: '@@@',
-                img: picture,
-                google: true
-            });
-        }
-        else {
-            //existe usuario
-            admin = adminDB;
-            // admin.google = true;
-            admin.password = '@@@';
-        }
-        // Guardar en BD
-        yield admin.save();
-        //Generar el TOKEN JWT
-        const token = yield generarJWT(admin.id);
-        res.json({
-            ok: true,
-            // msg: 'Google Signin',
-            // name, email, picture ,
-            // googleToken
-            token
-        });
-    }
-    catch (error) {
-        res.status(401).json({
-            ok: false,
-            msg: 'Token no es correcto'
-        });
-    }
 }));
 //Iniciar Sesion Administrador
 adminRouter.post('/login', [
@@ -119,8 +73,6 @@ adminRouter.post('/login', [
             ok: true,
             // msg: 'Hola Laime esto es LOGIN'
             token,
-            user: adminDB.nombre,
-            role: adminDB.role,
             menu: (0, menu_frontend_1.getMenuFrontEnd)(adminDB.role)
         });
     }
@@ -133,8 +85,7 @@ adminRouter.post('/login', [
     }
 }));
 //Obetner Administradores
-adminRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // adminRouter.get('/', validarJWT, async (req: any, res: any) => {
+adminRouter.get('/', validarJWT, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
     console.log(desde);
     // const admin = await Admin.find({}, 'nombre email role google')
@@ -298,54 +249,6 @@ adminRouter.post('/update_pass/:id', (req, res) => {
             admin
         });
         admin;
-    });
-});
-//Obetner 1 proyecto por ID
-adminRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const body = req.body;
-    admin_model_1.Admin.find({ _id: body._id }, (err, AdminDB) => {
-        if (err)
-            throw err;
-        if (AdminDB) {
-            const admin = AdminDB; //TRAE TODOS
-            res.json({
-                ok: true,
-                admin,
-                mensaje: 'Admin encontrado!!'
-            });
-        }
-        else {
-            res.json({
-                ok: false,
-                mensaje: 'Admin no encontrado en nuestro sistema!'
-            });
-        }
-    });
-}));
-//Actualizar personal
-adminRouter.post('/update/:id', (req, res) => {
-    const id = req.params.id;
-    const admin = {
-        nombre: req.body.nombre,
-        email: req.body.email,
-        password_show: req.body.password_show,
-        role: req.body.role,
-    };
-    // admin.password_show =  req.body.password_show,
-    // admin.password = bcrypt.hashSync(req.body.password_show, 10),
-    admin_model_1.Admin.findByIdAndUpdate(id, admin, { new: true }, (err, admin) => {
-        if (err)
-            throw err;
-        if (!admin) {
-            return res.json({
-                ok: false,
-                mensaje: 'Invalid data'
-            });
-        }
-        res.json({
-            ok: true,
-            admin
-        });
     });
 });
 module.exports = adminRouter;

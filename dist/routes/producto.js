@@ -10,71 +10,75 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const categorias_model_1 = require("../models/categorias.model");
-const categoriaRouter = (0, express_1.Router)();
-//crear Categoria 
-categoriaRouter.post('/', (req, res) => {
+const producto_model_1 = require("../models/producto.model");
+const productoRouter = (0, express_1.Router)();
+//crear Producto 
+productoRouter.post('/', (req, res) => {
     const body = req.body;
-    categorias_model_1.Categoria.create(body).then(CategoriaDB => {
+    producto_model_1.Producto.create(body).then(ProductoDB => {
         res.json({
             ok: true,
-            categoria: CategoriaDB
+            producto: ProductoDB
         });
     }).catch(err => {
         res.json(err);
     });
 });
-//Obetner Categoria
-categoriaRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Obetner Producto
+productoRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
-    const [categoria, total] = yield Promise.all([
-        categorias_model_1.Categoria.find()
+    const [producto, total] = yield Promise.all([
+        producto_model_1.Producto.find()
             .sort({ _id: -1 })
             .skip(desde)
             .limit(5),
-        categorias_model_1.Categoria.countDocuments()
+        producto_model_1.Producto.countDocuments()
     ]);
     res.json({
         ok: true,
-        categoria,
+        producto,
         total,
         id: req.id
     });
 }));
-//Obetner 1 Categoria por ID
-categoriaRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Obetner 1 Producto por ID
+productoRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
-    categorias_model_1.Categoria.find({ _id: body._id }, (err, CategoriaDB) => {
+    producto_model_1.Producto.find({ _id: body._id }, (err, ProductoDB) => {
         if (err)
             throw err;
-        if (CategoriaDB) {
-            const categoria = CategoriaDB; //TRAE TODOS
+        if (ProductoDB) {
+            const producto = ProductoDB; //TRAE TODOS
             res.json({
                 ok: true,
-                categoria,
-                mensaje: 'Categoria encontrado!!'
+                producto,
+                mensaje: 'Producto encontrado!!'
             });
         }
         else {
             res.json({
                 ok: false,
-                mensaje: 'Categoria no encontrado en nuestro sistema!'
+                mensaje: 'Producto no encontrado en nuestro sistema!'
             });
         }
     });
 }));
-//Actualizar Categoria
-categoriaRouter.post('/update/:id', (req, res) => {
+//Actualizar Producto
+productoRouter.post('/update/:id', (req, res) => {
     const id = req.params.id;
-    const categoria = {
+    const producto = {
+        id_categoria: req.body.id_categoria,
         nombre: req.body.nombre,
         descripcion: req.body.descripcion,
+        precio: req.body.precio,
+        stock: req.body.stock,
+        u_medida: req.body.u_medida,
         estado: req.body.estado,
     };
-    categorias_model_1.Categoria.findByIdAndUpdate(id, categoria, { new: true }, (err, categoria) => {
+    producto_model_1.Producto.findByIdAndUpdate(id, producto, { new: true }, (err, producto) => {
         if (err)
             throw err;
-        if (!categoria) {
+        if (!producto) {
             return res.json({
                 ok: false,
                 mensaje: 'Invalid data'
@@ -82,25 +86,25 @@ categoriaRouter.post('/update/:id', (req, res) => {
         }
         res.json({
             ok: true,
-            categoria
+            producto
         });
     });
 });
-//Eliminar cargo
-categoriaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Eliminar Producto
+productoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const cargo = yield categorias_model_1.Categoria.findById(id);
-        if (!cargo) {
+        const producto = yield producto_model_1.Producto.findById(id);
+        if (!producto) {
             return res.status(404).json({
                 ok: true,
-                msg: 'Cargo no encontrada por identificador'
+                msg: 'Producto no encontrada por identificador'
             });
         }
-        yield categorias_model_1.Categoria.findByIdAndDelete(id);
+        yield producto_model_1.Producto.findByIdAndDelete(id);
         res.json({
             ok: true,
-            msg: 'Cargo eliminado'
+            msg: 'Producto eliminado'
         });
     }
     catch (error) {
@@ -111,9 +115,9 @@ categoriaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 }));
 //Exportar Excel
-categoriaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+productoRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [data] = yield Promise.all([
-        categorias_model_1.Categoria.find({})
+        producto_model_1.Producto.find({})
             .sort({ id: -1 })
     ]);
     res.json({
@@ -121,4 +125,4 @@ categoriaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0,
         data,
     });
 }));
-module.exports = categoriaRouter;
+module.exports = productoRouter;

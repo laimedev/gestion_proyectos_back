@@ -10,71 +10,72 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const categorias_model_1 = require("../models/categorias.model");
-const categoriaRouter = (0, express_1.Router)();
-//crear Categoria 
-categoriaRouter.post('/', (req, res) => {
+const zonas_model_1 = require("../models/zonas.model");
+const zonaRouter = (0, express_1.Router)();
+//crear Zona 
+zonaRouter.post('/', (req, res) => {
     const body = req.body;
-    categorias_model_1.Categoria.create(body).then(CategoriaDB => {
+    zonas_model_1.Zona.create(body).then(ZonaDB => {
         res.json({
             ok: true,
-            categoria: CategoriaDB
+            zona: ZonaDB
         });
     }).catch(err => {
         res.json(err);
     });
 });
-//Obetner Categoria
-categoriaRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Obetner zona
+zonaRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
-    const [categoria, total] = yield Promise.all([
-        categorias_model_1.Categoria.find()
+    const [zona, total] = yield Promise.all([
+        zonas_model_1.Zona.find()
             .sort({ _id: -1 })
             .skip(desde)
             .limit(5),
-        categorias_model_1.Categoria.countDocuments()
+        zonas_model_1.Zona.countDocuments()
     ]);
     res.json({
         ok: true,
-        categoria,
+        zona,
         total,
         id: req.id
     });
 }));
-//Obetner 1 Categoria por ID
-categoriaRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Obetner 1 zona por ID
+zonaRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
-    categorias_model_1.Categoria.find({ _id: body._id }, (err, CategoriaDB) => {
+    zonas_model_1.Zona.find({ _id: body._id }, (err, ZonaDB) => {
         if (err)
             throw err;
-        if (CategoriaDB) {
-            const categoria = CategoriaDB; //TRAE TODOS
+        if (ZonaDB) {
+            const zona = ZonaDB; //TRAE TODOS
             res.json({
                 ok: true,
-                categoria,
-                mensaje: 'Categoria encontrado!!'
+                zona,
+                mensaje: 'Zona encontrado!!'
             });
         }
         else {
             res.json({
                 ok: false,
-                mensaje: 'Categoria no encontrado en nuestro sistema!'
+                mensaje: 'Zona no encontrado en nuestro sistema!'
             });
         }
     });
 }));
-//Actualizar Categoria
-categoriaRouter.post('/update/:id', (req, res) => {
+//Actualizar zona
+zonaRouter.post('/update/:id', (req, res) => {
     const id = req.params.id;
-    const categoria = {
+    const zona = {
         nombre: req.body.nombre,
+        cod_zona: req.body.cod_zona,
         descripcion: req.body.descripcion,
         estado: req.body.estado,
     };
-    categorias_model_1.Categoria.findByIdAndUpdate(id, categoria, { new: true }, (err, categoria) => {
+    zonas_model_1.Zona.findByIdAndUpdate(id, zona, { new: true }, (err, zona) => {
         if (err)
             throw err;
-        if (!categoria) {
+        if (!zona) {
             return res.json({
                 ok: false,
                 mensaje: 'Invalid data'
@@ -82,25 +83,25 @@ categoriaRouter.post('/update/:id', (req, res) => {
         }
         res.json({
             ok: true,
-            categoria
+            zona
         });
     });
 });
-//Eliminar cargo
-categoriaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Eliminar zona
+zonaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const cargo = yield categorias_model_1.Categoria.findById(id);
-        if (!cargo) {
+        const zona = yield zonas_model_1.Zona.findById(id);
+        if (!zona) {
             return res.status(404).json({
                 ok: true,
-                msg: 'Cargo no encontrada por identificador'
+                msg: 'Zona no encontrada por identificador'
             });
         }
-        yield categorias_model_1.Categoria.findByIdAndDelete(id);
+        yield zonas_model_1.Zona.findByIdAndDelete(id);
         res.json({
             ok: true,
-            msg: 'Cargo eliminado'
+            msg: 'Zona eliminado'
         });
     }
     catch (error) {
@@ -111,9 +112,9 @@ categoriaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 }));
 //Exportar Excel
-categoriaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+zonaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [data] = yield Promise.all([
-        categorias_model_1.Categoria.find({})
+        zonas_model_1.Zona.find({})
             .sort({ id: -1 })
     ]);
     res.json({
@@ -121,4 +122,4 @@ categoriaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0,
         data,
     });
 }));
-module.exports = categoriaRouter;
+module.exports = zonaRouter;

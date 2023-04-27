@@ -10,71 +10,72 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const categorias_model_1 = require("../models/categorias.model");
-const categoriaRouter = (0, express_1.Router)();
-//crear Categoria 
-categoriaRouter.post('/', (req, res) => {
+const giroNegocio_model_1 = require("../models/giroNegocio.model");
+const giroNegocioRouter = (0, express_1.Router)();
+//crear GiroNegocio 
+giroNegocioRouter.post('/', (req, res) => {
     const body = req.body;
-    categorias_model_1.Categoria.create(body).then(CategoriaDB => {
+    giroNegocio_model_1.GiroNegocio.create(body).then(GiroNegocioDB => {
         res.json({
             ok: true,
-            categoria: CategoriaDB
+            giroNegocio: GiroNegocioDB
         });
     }).catch(err => {
         res.json(err);
     });
 });
-//Obetner Categoria
-categoriaRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Obetner GiroNegocio
+giroNegocioRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
-    const [categoria, total] = yield Promise.all([
-        categorias_model_1.Categoria.find()
+    const [giroNegocio, total] = yield Promise.all([
+        giroNegocio_model_1.GiroNegocio.find()
             .sort({ _id: -1 })
             .skip(desde)
             .limit(5),
-        categorias_model_1.Categoria.countDocuments()
+        giroNegocio_model_1.GiroNegocio.countDocuments()
     ]);
     res.json({
         ok: true,
-        categoria,
+        giroNegocio,
         total,
         id: req.id
     });
 }));
-//Obetner 1 Categoria por ID
-categoriaRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Obetner 1 GiroNegocio por ID
+giroNegocioRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
-    categorias_model_1.Categoria.find({ _id: body._id }, (err, CategoriaDB) => {
+    giroNegocio_model_1.GiroNegocio.find({ _id: body._id }, (err, GiroNegocioDB) => {
         if (err)
             throw err;
-        if (CategoriaDB) {
-            const categoria = CategoriaDB; //TRAE TODOS
+        if (GiroNegocioDB) {
+            const giroNegocio = GiroNegocioDB; //TRAE TODOS
             res.json({
                 ok: true,
-                categoria,
-                mensaje: 'Categoria encontrado!!'
+                giroNegocio,
+                mensaje: 'GiroNegocio encontrado!!'
             });
         }
         else {
             res.json({
                 ok: false,
-                mensaje: 'Categoria no encontrado en nuestro sistema!'
+                mensaje: 'GiroNegocio no encontrado en nuestro sistema!'
             });
         }
     });
 }));
-//Actualizar Categoria
-categoriaRouter.post('/update/:id', (req, res) => {
+//Actualizar GiroNegocio
+giroNegocioRouter.post('/update/:id', (req, res) => {
     const id = req.params.id;
-    const categoria = {
+    const giroNegocio = {
         nombre: req.body.nombre,
+        cod_zona: req.body.cod_zona,
         descripcion: req.body.descripcion,
         estado: req.body.estado,
     };
-    categorias_model_1.Categoria.findByIdAndUpdate(id, categoria, { new: true }, (err, categoria) => {
+    giroNegocio_model_1.GiroNegocio.findByIdAndUpdate(id, giroNegocio, { new: true }, (err, giroNegocio) => {
         if (err)
             throw err;
-        if (!categoria) {
+        if (!giroNegocio) {
             return res.json({
                 ok: false,
                 mensaje: 'Invalid data'
@@ -82,25 +83,25 @@ categoriaRouter.post('/update/:id', (req, res) => {
         }
         res.json({
             ok: true,
-            categoria
+            giroNegocio
         });
     });
 });
-//Eliminar cargo
-categoriaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Eliminar zona
+giroNegocioRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const cargo = yield categorias_model_1.Categoria.findById(id);
-        if (!cargo) {
+        const giroNegocio = yield giroNegocio_model_1.GiroNegocio.findById(id);
+        if (!giroNegocio) {
             return res.status(404).json({
                 ok: true,
-                msg: 'Cargo no encontrada por identificador'
+                msg: 'Giro Negocio no encontrada por identificador'
             });
         }
-        yield categorias_model_1.Categoria.findByIdAndDelete(id);
+        yield giroNegocio_model_1.GiroNegocio.findByIdAndDelete(id);
         res.json({
             ok: true,
-            msg: 'Cargo eliminado'
+            msg: 'Giro Negocio eliminado'
         });
     }
     catch (error) {
@@ -111,9 +112,9 @@ categoriaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 }));
 //Exportar Excel
-categoriaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+giroNegocioRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [data] = yield Promise.all([
-        categorias_model_1.Categoria.find({})
+        giroNegocio_model_1.GiroNegocio.find({})
             .sort({ id: -1 })
     ]);
     res.json({
@@ -121,4 +122,4 @@ categoriaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0,
         data,
     });
 }));
-module.exports = categoriaRouter;
+module.exports = giroNegocioRouter;

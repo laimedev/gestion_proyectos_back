@@ -10,71 +10,74 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const categorias_model_1 = require("../models/categorias.model");
-const categoriaRouter = (0, express_1.Router)();
-//crear Categoria 
-categoriaRouter.post('/', (req, res) => {
+const vehiculos_model_1 = require("../models/vehiculos.model");
+const vehiculoRouter = (0, express_1.Router)();
+//crear Vehiculo 
+vehiculoRouter.post('/', (req, res) => {
     const body = req.body;
-    categorias_model_1.Categoria.create(body).then(CategoriaDB => {
+    vehiculos_model_1.Vehiculo.create(body).then(VehiculoDB => {
         res.json({
             ok: true,
-            categoria: CategoriaDB
+            vehiculo: VehiculoDB
         });
     }).catch(err => {
         res.json(err);
     });
 });
-//Obetner Categoria
-categoriaRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Obetner Vehiculo
+vehiculoRouter.get('/show', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const desde = Number(req.query.desde) || 0;
-    const [categoria, total] = yield Promise.all([
-        categorias_model_1.Categoria.find()
+    const [vehiculo, total] = yield Promise.all([
+        vehiculos_model_1.Vehiculo.find()
             .sort({ _id: -1 })
             .skip(desde)
             .limit(5),
-        categorias_model_1.Categoria.countDocuments()
+        vehiculos_model_1.Vehiculo.countDocuments()
     ]);
     res.json({
         ok: true,
-        categoria,
+        vehiculo,
         total,
         id: req.id
     });
 }));
-//Obetner 1 Categoria por ID
-categoriaRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Obetner 1 Vehiculo por ID
+vehiculoRouter.post('/showByID', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const body = req.body;
-    categorias_model_1.Categoria.find({ _id: body._id }, (err, CategoriaDB) => {
+    vehiculos_model_1.Vehiculo.find({ _id: body._id }, (err, VehiculoDB) => {
         if (err)
             throw err;
-        if (CategoriaDB) {
-            const categoria = CategoriaDB; //TRAE TODOS
+        if (VehiculoDB) {
+            const vehiculo = VehiculoDB; //TRAE TODOS
             res.json({
                 ok: true,
-                categoria,
-                mensaje: 'Categoria encontrado!!'
+                vehiculo,
+                mensaje: 'Vehiculo encontrado!!'
             });
         }
         else {
             res.json({
                 ok: false,
-                mensaje: 'Categoria no encontrado en nuestro sistema!'
+                mensaje: 'Vehiculo no encontrado en nuestro sistema!'
             });
         }
     });
 }));
-//Actualizar Categoria
-categoriaRouter.post('/update/:id', (req, res) => {
+//Actualizar Vehiculo
+vehiculoRouter.post('/update/:id', (req, res) => {
     const id = req.params.id;
-    const categoria = {
-        nombre: req.body.nombre,
-        descripcion: req.body.descripcion,
+    const vehiculo = {
+        marca: req.body.marca,
+        modelo: req.body.modelo,
+        placa: req.body.placa,
+        id_conductor: req.body.id_conductor,
+        cod_vehiculo: req.body.cod_vehiculo,
         estado: req.body.estado,
     };
-    categorias_model_1.Categoria.findByIdAndUpdate(id, categoria, { new: true }, (err, categoria) => {
+    vehiculos_model_1.Vehiculo.findByIdAndUpdate(id, vehiculo, { new: true }, (err, vehiculo) => {
         if (err)
             throw err;
-        if (!categoria) {
+        if (!vehiculo) {
             return res.json({
                 ok: false,
                 mensaje: 'Invalid data'
@@ -82,25 +85,25 @@ categoriaRouter.post('/update/:id', (req, res) => {
         }
         res.json({
             ok: true,
-            categoria
+            vehiculo
         });
     });
 });
-//Eliminar cargo
-categoriaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+//Eliminar vehiculo
+vehiculoRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const cargo = yield categorias_model_1.Categoria.findById(id);
-        if (!cargo) {
+        const vehiculo = yield vehiculos_model_1.Vehiculo.findById(id);
+        if (!vehiculo) {
             return res.status(404).json({
                 ok: true,
-                msg: 'Cargo no encontrada por identificador'
+                msg: 'Vehiculo no encontrada por identificador'
             });
         }
-        yield categorias_model_1.Categoria.findByIdAndDelete(id);
+        yield vehiculos_model_1.Vehiculo.findByIdAndDelete(id);
         res.json({
             ok: true,
-            msg: 'Cargo eliminado'
+            msg: 'Vehiculo eliminado'
         });
     }
     catch (error) {
@@ -111,9 +114,9 @@ categoriaRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 }));
 //Exportar Excel
-categoriaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+vehiculoRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const [data] = yield Promise.all([
-        categorias_model_1.Categoria.find({})
+        vehiculos_model_1.Vehiculo.find({})
             .sort({ id: -1 })
     ]);
     res.json({
@@ -121,4 +124,4 @@ categoriaRouter.get('/exportar', (req, res) => __awaiter(void 0, void 0, void 0,
         data,
     });
 }));
-module.exports = categoriaRouter;
+module.exports = vehiculoRouter;

@@ -33,20 +33,12 @@ const AdminSchema = new mongoose_1.Schema({
     },
     img: {
         type: String,
-        default: 'https://laimedev.com/proyectos2021/luisfavioxammar.com/resources/logo_colegio.png'
+        default: 'default.png'
     },
     role: {
         type: String,
         required: true,
         default: '2'
-    },
-    // sedeATP: {
-    //     type: String,
-    //     required: true,
-    // },
-    google: {
-        type: Boolean,
-        default: false
     },
 });
 AdminSchema.method('toJSON', function () {

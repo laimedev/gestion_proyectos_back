@@ -1,6 +1,5 @@
 import { Usuario } from "./usuario.model";
 import { Schema, Document, model} from 'mongoose';
-import  bcrypt  from 'bcrypt';
 
 const AdminSchema = new Schema({
     nombre: {
@@ -22,7 +21,7 @@ const AdminSchema = new Schema({
     },
     img: {
         type: String,
-        default: 'https://laimedev.com/proyectos2021/luisfavioxammar.com/resources/logo_colegio.png'
+        default: 'default.png'
         
     },
     role: {
@@ -30,16 +29,6 @@ const AdminSchema = new Schema({
         required: true,
         default: '2'
     },
-    // sedeATP: {
-    //     type: String,
-    //     required: true,
-    // },
-    google: {
-        type: Boolean,
-        default: false
-
-    },
-
 });
 
 
@@ -51,6 +40,7 @@ AdminSchema.method('toJSON', function() {
     return Object;
 })
 
+
 interface IAdmin extends Document {
     nombre: string;
     email: string;
@@ -58,5 +48,6 @@ interface IAdmin extends Document {
     password: string;
     password_show: string;
 }
+
 
 export const Admin = model<IAdmin>('Admin', AdminSchema);

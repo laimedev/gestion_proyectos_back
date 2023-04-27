@@ -9,22 +9,26 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 var mongoose = require('mongoose'); // 1. require mongoose
 var autoIncrement = require('mongoose-auto-increment');
 const usuarioSchema = new mongoose_1.Schema({
+    cod_conductor: {
+        type: String,
+    },
     nombre: {
         type: String,
-        // required: [true, 'El nombre es necesario'] 
     },
-    foto: {
+    apellidos: {
+        type: String,
+    },
+    tipo_documento: {
         type: String,
         default: ''
     },
-    dni: {
-        type: String,
+    numero_documento: {
+        type: Number,
         unique: true,
         required: [true, 'El documento de identidad es necesario']
     },
     password: {
         type: String,
-        // required: [true, 'La contraseña es necesaria']
     },
     password_show: {
         type: String,
@@ -38,46 +42,25 @@ const usuarioSchema = new mongoose_1.Schema({
         type: String,
         item: null
     },
-    ubicacion: {
+    fecha_nacimiento: {
         type: String,
         item: null
     },
-    departamento: {
+    id_vehiculo: {
         type: String,
         item: null
     },
-    provincia: {
+    num_licencia: {
         type: String,
         item: null
     },
-    region: {
-        type: String,
-        item: null
+    estado: {
+        type: Number,
+        default: 1
     },
     avatar: {
         type: String,
         default: 'av-10.png'
-    },
-    perfil: {
-        type: String,
-    },
-    push: {
-        type: String,
-    },
-    codigoSeccion: {
-        type: String,
-    },
-    pretest: {
-        type: Boolean,
-        default: false
-    },
-    lecciones: {
-        type: Boolean,
-        default: false
-    },
-    postest: {
-        type: Boolean,
-        default: false
     },
 });
 usuarioSchema.method('compararPassword', function (password = '') {

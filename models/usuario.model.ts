@@ -1,30 +1,31 @@
 import {Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
-
 var mongoose = require('mongoose');  // 1. require mongoose
 var autoIncrement = require('mongoose-auto-increment');
 
 
 
 const usuarioSchema = new Schema({
-
-
+    cod_conductor: {
+        type: String,
+    },
     nombre: {
         type: String,
-        // required: [true, 'El nombre es necesario'] 
     },
-    foto: {
+    apellidos: {
+        type: String,
+    },
+    tipo_documento: {
         type: String,
         default: ''
     },
-    dni: {
-        type: String,
+    numero_documento: {
+        type: Number,
         unique: true,
         required: [ true, 'El documento de identidad es necesario']
     },
     password: {
         type: String,
-        // required: [true, 'La contraseña es necesaria']
     },
     password_show: {
         type: String,
@@ -38,47 +39,27 @@ const usuarioSchema = new Schema({
         type: String,
         item: null
     },
-    ubicacion: {
+    fecha_nacimiento: {
         type: String,
         item: null
     },
-    departamento: {
+    id_vehiculo: {
         type: String,
         item: null
     },
-    provincia: {
+    num_licencia: {
         type: String,
         item: null
     },
-    region: {
-        type: String,
-        item: null
-    }, 
+    estado: {
+        type: Number,
+        default: 1
+    },
     avatar: {
         type: String,
         default: 'av-10.png'
     },
-    perfil: {
-        type: String,
-    },
-    push: {
-        type: String,
-    },
-    codigoSeccion: {
-        type: String,
-    },
-    pretest: {
-        type: Boolean,
-        default: false
-    },
-    lecciones: {
-        type: Boolean,
-        default: false
-    },
-    postest: {
-        type: Boolean,
-        default: false
-    },
+
 
 });
 
@@ -96,24 +77,20 @@ usuarioSchema.method('compararPassword', function( password: string = ''): boole
 
 
 interface IUsuario extends Document {
+    cod_conductor: string;
     nombre: string;
-    foto: string;
-    avatar: string;
-    dni: string;
+    apellidos: string;
+    tipo_documento: string;
+    numero_documento: number;
     password: string;
     password_show: string;
     email: string;
     celular: string;
-    ubicacion: string;
-    departamento: string;
-    provincia: string;
-    region: string;
-    perfil: String;
-    push: string;
-    codigoSeccion: string;
-    pretest: boolean;
-    lecciones: boolean;
-    postest: boolean;
+    fecha_nacimiento: string;
+    id_vehiculo: string;
+    num_licencia: string;
+    estado: number;
+    avatar: string;
     compararPassword(password: string): boolean;
 }
 
@@ -121,7 +98,6 @@ interface IUsuario extends Document {
 // autoIncrement.initialize(mongoose.connection); // 3. initialize autoIncrement 
 // usuarioSchema.plugin(autoIncrement.plugin, 'User'); 
 // usuarioSchema.plugin(autoIncrement.plugin, 'Usuario'); 
-
 
 export const Usuario = model<IUsuario>('User', usuarioSchema);
 // export const Usuario = model<IUsuario>('Usuario', usuarioSchema);

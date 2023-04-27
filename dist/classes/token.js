@@ -26,6 +26,6 @@ class Token {
         });
     }
 }
-exports.default = Token;
 Token.seed = 'este-es-el-seed-de-clave-secreta-01';
 Token.caducidad = '300d';
+exports.default = Token;
